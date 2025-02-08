@@ -78,7 +78,7 @@ const MainLayout = () => {
         {/* Logo */}
         <div className="flex items-center justify-center py-4">
           <img
-            src="/public/favicon.svg"
+            src="/favicon.svg"
             alt="Logo"
             className="w-10 h-10 cursor-pointer"
             onClick={() => navigate(`/${role}/dashboard`)}
