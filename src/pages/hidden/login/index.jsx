@@ -80,7 +80,7 @@ const Login = () => {
         <p className="text-white text-xl font-bold">Educational CRM</p>
       </div>
       {/* Right Side - Form */}
-      <div className="flex flex-col w-full lg:w-1/2 justify-center items-center bg-white dark:bg-dark-l">
+      <div className="flex flex-col w-full lg:w-1/2 justify-center items-center bg-white dark:bg-ant-dark-blue">
         <img src="./favicon.svg" alt="Logo" className="w-32 mb-8" />
         {/* Login Form */}
         <Form
