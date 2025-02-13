@@ -10,8 +10,11 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { Card, Select } from "antd";
+import { useSelector } from "react-redux";
 
 const LineFinanceChart = () => {
+  const { theme } = useSelector((state) => state.theme);
+
   const yearlyData = {
     2023: [
       { month: "Jan", income: 5000, expense: 3200 },
@@ -88,7 +91,10 @@ const LineFinanceChart = () => {
             <YAxis color={"red"} />
             <Tooltip
               formatter={(i) => Number(i).toLocaleString("uz-Uz")}
-              contentStyle={{ background: "black", color: "white" }}
+              contentStyle={{
+                background: theme === "dark" ? "black" : "white",
+                color: theme === "dark" ? "white" : "black",
+              }}
             />
             <Legend />
             <Line
