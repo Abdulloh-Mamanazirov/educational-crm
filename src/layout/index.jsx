@@ -41,23 +41,23 @@ const MainLayout = () => {
 
   // Profile dropdown menu
   const profileMenu = (
-    <Menu>
-      <Menu.Item
-        key="profile"
-        onClick={() => navigate(`/${role}/profile`)}
-        icon={<span className="fa-solid fa-user" />}
-      >
-        Profile
-      </Menu.Item>
-      <Menu.Item
-        danger
-        key="logout"
-        onClick={handleLogout}
-        icon={<span className="fa-solid fa-arrow-right-from-bracket" />}
-      >
-        Log out
-      </Menu.Item>
-    </Menu>
+    <Menu
+      items={[
+        {
+          key: "profile",
+          label: "Profile",
+          onClick: () => navigate(`/${role}/profile`),
+          icon: <span className="fa-solid fa-user" />,
+        },
+        {
+          danger: true,
+          key: "logout",
+          onClick: handleLogout,
+          icon: <span className="fa-solid fa-arrow-right-from-bracket" />,
+          label: "Log out",
+        },
+      ]}
+    />
   );
 
   // Current date
