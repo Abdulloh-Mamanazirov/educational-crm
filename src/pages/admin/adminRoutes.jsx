@@ -1,4 +1,5 @@
 import AdminDashboard from "./home";
+import AdminProfile from "./profile";
 
 export const adminRoutes = [
   {
@@ -19,4 +20,13 @@ export const adminRoutes = [
   //     showInMenu: true,
   //     roles: ["admin"],
   //   },
+  {
+    id: 402,
+    path: "/admin/profile",
+    element: <AdminProfile />,
+    label: "Profile",
+    icon: <span className="fa-solid fa-user" />,
+    showInMenu: true,
+    roles: ["admin"],
+  },
 ];
