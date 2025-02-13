@@ -1,6 +1,5 @@
 import React, { useMemo } from "react";
 import { Card, Typography, Tooltip } from "antd";
-import { InfoCircleOutlined } from "@ant-design/icons";
 
 const { Text } = Typography;
 
@@ -66,7 +65,10 @@ const WeeklySchedule = ({ groups }) => {
           }}
         >
           <Text strong>{group.name}</Text>
-          <InfoCircleOutlined style={{ color: "#1890ff" }} />
+          <span
+            className="fa-solid fa-circle-info"
+            style={{ color: "#1890ff" }}
+          />
         </div>
       </Card>
     </Tooltip>
