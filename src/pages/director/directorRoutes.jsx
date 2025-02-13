@@ -1,4 +1,7 @@
 import DirectorDashboard from "./home";
+import DirectorTeachers from "./teachers";
+import DirectorStudents from "./students";
+import DirectorEmployees from "./employees";
 
 export const directorRoutes = [
   {
@@ -7,6 +10,33 @@ export const directorRoutes = [
     element: <DirectorDashboard />,
     label: "Home",
     icon: <span className="fa-solid fa-home" />,
+    showInMenu: true,
+    roles: ["director"],
+  },
+  {
+    id: 501,
+    path: "/director/teachers",
+    element: <DirectorTeachers />,
+    label: "Teachers",
+    icon: <span className="fa-solid fa-chalkboard-user" />,
+    showInMenu: true,
+    roles: ["director"],
+  },
+  {
+    id: 502,
+    path: "/director/students",
+    element: <DirectorStudents />,
+    label: "Students",
+    icon: <span className="fa-solid fa-user-graduate" />,
+    showInMenu: true,
+    roles: ["director"],
+  },
+  {
+    id: 503,
+    path: "/director/employees",
+    element: <DirectorEmployees />,
+    label: "Employees",
+    icon: <span className="fa-solid fa-user-tie" />,
     showInMenu: true,
     roles: ["director"],
   },
