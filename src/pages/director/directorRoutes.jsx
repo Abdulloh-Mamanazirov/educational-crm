@@ -2,6 +2,7 @@ import DirectorDashboard from "./home";
 import DirectorTeachers from "./teachers";
 import DirectorStudents from "./students";
 import DirectorEmployees from "./employees";
+import DirectorGroups from "./groups";
 
 export const directorRoutes = [
   {
@@ -37,6 +38,15 @@ export const directorRoutes = [
     element: <DirectorEmployees />,
     label: "Employees",
     icon: <span className="fa-solid fa-user-tie" />,
+    showInMenu: true,
+    roles: ["director"],
+  },
+  {
+    id: 504,
+    path: "/director/groups",
+    element: <DirectorGroups />,
+    label: "Groups",
+    icon: <span className="fa-solid fa-people-group" />,
     showInMenu: true,
     roles: ["director"],
   },
