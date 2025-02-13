@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 *::-webkit-scrollbar {
-  width: 10px;
+  width: 7px;
+  height: 7px;
   background: linear-gradient(#545454, #1f1f1f);
   border-radius: 20px;
 }
@@ -11,4 +12,49 @@
 *::-webkit-scrollbar-thumb {
   background: linear-gradient(#8b8b8b, #717171);
   border-radius: 20px;
+}
+
+.dark-table {
+  background-color: #1f2937;
+  color: white;
+}
+
+.dark-table *:not(.ant-tag) {
+  background-color: #1f2937 !important;
+  color: white;
+}
+
+.dark-table .ant-table-thead > tr > th {
+  background-color: #374151;
+  color: white;
+  border-bottom: 1px solid #4b5563;
+}
+
+.dark-table .ant-table-tbody > tr > td {
+  border-bottom: 1px solid #4b5563;
+  color: white;
+}
+
+.dark-table .ant-table-tbody > tr:hover > td.ant-table-cell-row-hover {
+  background-color: #374151 !important;
+}
+
+.dark-table .ant-pagination-item a {
+  color: white;
+}
+
+.dark-table .ant-pagination-item-active {
+  background-color: #374151;
+  border-color: #4b5563;
+}
+
+.dark-search .ant-input {
+  background-color: #374151;
+  color: white;
+  border-color: #4b5563;
+}
+
+.dark-search .ant-input-search-button {
+  background-color: #4b5563;
+  border-color: #4b5563;
 }
