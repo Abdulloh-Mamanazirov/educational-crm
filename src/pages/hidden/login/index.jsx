@@ -6,6 +6,12 @@ import { changeTheme } from "../../../redux";
 
 const mockCredentials = [
   {
+    username: "director",
+    password: "director",
+    role: "director",
+    token: "director-123456789",
+  },
+  {
     username: "admin",
     password: "admin",
     role: "admin",
