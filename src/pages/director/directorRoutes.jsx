@@ -3,6 +3,7 @@ import DirectorTeachers from "./teachers";
 import DirectorStudents from "./students";
 import DirectorEmployees from "./employees";
 import DirectorGroups from "./groups";
+import DirectorGroupDetails from "./groupDetails";
 
 export const directorRoutes = [
   {
@@ -48,6 +49,13 @@ export const directorRoutes = [
     label: "Groups",
     icon: <span className="fa-solid fa-people-group" />,
     showInMenu: true,
+    roles: ["director"],
+  },
+  {
+    id: 505,
+    path: "/director/groups/:group_id",
+    element: <DirectorGroupDetails />,
+    showInMenu: false,
     roles: ["director"],
   },
   // {
