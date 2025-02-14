@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import {
   Card,
@@ -53,6 +54,7 @@ const mockGroups = [
 ];
 
 const GroupManagement = () => {
+  const navigate = useNavigate();
   const [groups, setGroups] = useState(mockGroups);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [editingGroup, setEditingGroup] = useState(null);
@@ -189,6 +191,12 @@ const GroupManagement = () => {
       key: "actions",
       render: (_, record) => (
         <Space>
+          <Button
+            type="link"
+            icon={<i className="fa-solid fa-eye" />}
+            style={{ color: "#22c55e" }}
+            onClick={() => navigate(record.id)}
+          />
           <Button
             type="link"
             icon={<i className="fa-solid fa-edit" />}
