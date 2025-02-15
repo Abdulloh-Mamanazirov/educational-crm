@@ -7,24 +7,17 @@ import {
   Button,
   Modal,
   Form,
-  Input,
   Select,
   Tag,
   Typography,
   Space,
-  Descriptions,
-  Rate,
   message,
-  Tooltip,
-  Drawer,
   Popconfirm,
 } from "antd";
 import moment from "moment";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-
-const { Text } = Typography;
-const { TextArea } = Input;
+import { AttendanceModal, PaymentModal } from "./sections";
 
 // Mock data
 const mockGroup = {
@@ -95,10 +88,6 @@ const GroupDetailPage = () => {
   const [students, setStudents] = useState([]);
   const [isAddStudentModalVisible, setIsAddStudentModalVisible] =
     useState(false);
-  const [isAttendanceDrawerVisible, setIsAttendanceDrawerVisible] =
-    useState(false);
-  const [selectedStudent, setSelectedStudent] = useState(null);
-  const [attendanceForm] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const { theme } = useSelector((state) => state.theme);
 
@@ -148,26 +137,6 @@ const GroupDetailPage = () => {
     }
   };
 
-  const handleAttendanceSubmit = async (values) => {
-    try {
-      setLoading(true);
-      // Mock API call to update attendance
-      const attendanceData = {
-        ...values,
-        date: moment().format("YYYY-MM-DD"),
-        group_id: group_id,
-        student_id: selectedStudent.id,
-      };
-      mockAttendance.push(attendanceData);
-      message.success("Attendance updated successfully");
-      setIsAttendanceDrawerVisible(false);
-    } catch (error) {
-      message.error("Failed to update attendance");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleRemoveStudent = async (studentId) => {
     try {
       // Remove student from group
@@ -194,12 +163,7 @@ const GroupDetailPage = () => {
     {
       title: "Parent",
       key: "parent",
-      render: (_, record) => (
-        <Space direction="vertical" size="small">
-          <Text>{record.parent_name}</Text>
-          <Text type="secondary">{record.parent_phone}</Text>
-        </Space>
-      ),
+      render: (_, record) => [record.parent_name, <br />, record.parent_phone],
     },
     {
       title: "Payment Status",
@@ -209,6 +173,10 @@ const GroupDetailPage = () => {
           {checkPaymentStatus(record.id) ? "Paid" : "Unpaid"}
         </Tag>
       ),
+      sorter: (a, b) =>
+        String(checkPaymentStatus(a.id)).localeCompare(
+          String(checkPaymentStatus(b.id))
+        ),
     },
     {
       title: "Today's Attendance",
@@ -218,41 +186,11 @@ const GroupDetailPage = () => {
         return (
           <Space>
             {attendance ? (
-              <>
-                <Tag color="green">Present</Tag>
-                <Tooltip title="View/Edit Attendance">
-                  <Button
-                    icon={<i className="fa-solid fa-edit" />}
-                    style={{ color: "#22c55e" }}
-                    onClick={() => {
-                      setSelectedStudent(record);
-                      attendanceForm.setFieldsValue(attendance);
-                      setIsAttendanceDrawerVisible(true);
-                    }}
-                  />
-                </Tooltip>
-              </>
+              <Tag color="green">Present</Tag>
             ) : (
-              <Button
-                type="primary"
-                size="small"
-                onClick={() => {
-                  setSelectedStudent(record);
-                  attendanceForm.resetFields();
-                  setIsAttendanceDrawerVisible(true);
-                }}
-              >
-                Present✅
-              </Button>
+              <Tag color="red">Absent</Tag>
             )}
-            <Tooltip title="View Payment History">
-              <Button
-                icon={<i className="fa-solid fa-money-bill" />}
-                onClick={() => {
-                  /* Handle payment history view */
-                }}
-              />
-            </Tooltip>
+            <PaymentModal />
             <Popconfirm
               title="Are you sure you want to remove this student from the group?"
               onConfirm={() => handleRemoveStudent(record.id)}
@@ -327,13 +265,19 @@ const GroupDetailPage = () => {
             title={<p className="dark:text-white">Students</p>}
             className="dark:bg-gradient-to-br from-dark-m/95 to-dark-l"
             extra={
-              <Button
-                type="primary"
-                icon={<i className="fa-solid fa-plus" />}
-                onClick={() => setIsAddStudentModalVisible(true)}
-              >
-                Add Student
-              </Button>
+              <div className="flex items-center gap-3">
+                <AttendanceModal
+                  students={students}
+                  attendance={mockAttendance}
+                />
+                <Button
+                  type="primary"
+                  icon={<i className="fa-solid fa-plus" />}
+                  onClick={() => setIsAddStudentModalVisible(true)}
+                >
+                  Add Student
+                </Button>
+              </div>
             }
           >
             <Table
@@ -389,59 +333,6 @@ const GroupDetailPage = () => {
           </Form.Item>
         </Form>
       </Modal>
-
-      {/* Attendance Drawer */}
-      <Drawer
-        title={`Attendance - ${selectedStudent?.name}`}
-        open={isAttendanceDrawerVisible}
-        onClose={() => setIsAttendanceDrawerVisible(false)}
-        width={400}
-      >
-        <Form
-          form={attendanceForm}
-          onFinish={handleAttendanceSubmit}
-          layout="vertical"
-        >
-          <Form.Item
-            name="homework"
-            label="Homework Status"
-            rules={[{ required: true }]}
-          >
-            <Select>
-              <Select.Option value="Completed">Completed</Select.Option>
-              <Select.Option value="Incomplete">Incomplete</Select.Option>
-              <Select.Option value="Partial">Partial</Select.Option>
-            </Select>
-          </Form.Item>
-
-          <Form.Item
-            name="activeness"
-            label="Class Participation"
-            rules={[{ required: true }]}
-          >
-            <Rate />
-          </Form.Item>
-
-          <Form.Item
-            name="description"
-            label="Notes"
-            rules={[{ required: true }]}
-          >
-            <TextArea rows={4} />
-          </Form.Item>
-
-          <Form.Item>
-            <Space>
-              <Button type="primary" htmlType="submit" loading={loading}>
-                Save
-              </Button>
-              <Button onClick={() => setIsAttendanceDrawerVisible(false)}>
-                Cancel
-              </Button>
-            </Space>
-          </Form.Item>
-        </Form>
-      </Drawer>
     </div>
   );
 };
