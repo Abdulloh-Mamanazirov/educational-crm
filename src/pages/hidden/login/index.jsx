@@ -61,7 +61,7 @@ const Login = () => {
         return navigate(homePath);
       }, 1000);
     } else {
-      messageApi.error("Username orr password incorrect!");
+      messageApi.error("Username or password incorrect!");
     }
   };
 
