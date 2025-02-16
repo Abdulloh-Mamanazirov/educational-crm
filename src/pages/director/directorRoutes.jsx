@@ -5,6 +5,8 @@ import DirectorEmployees from "./employees";
 import DirectorGroups from "./groups";
 import DirectorGroupDetails from "./groupDetails";
 import DirectorStudentPayments from "./payments";
+import DirectorExpenses from "./expenses";
+import DirectorBadges from "./badges";
 
 export const directorRoutes = [
   {
@@ -65,6 +67,24 @@ export const directorRoutes = [
     element: <DirectorStudentPayments />,
     label: "Payments",
     icon: <span className="fa-solid fa-money-bill" />,
+    showInMenu: true,
+    roles: ["director"],
+  },
+  {
+    id: 508,
+    path: "/director/expenses",
+    element: <DirectorExpenses />,
+    label: "Expenses",
+    icon: <span className="fa-solid fa-hand-holding-dollar" />,
+    showInMenu: true,
+    roles: ["director"],
+  },
+  {
+    id: 509,
+    path: "/director/badges",
+    element: <DirectorBadges />,
+    label: "Badges",
+    icon: <span className="fa-solid fa-award" />,
     showInMenu: true,
     roles: ["director"],
   },
