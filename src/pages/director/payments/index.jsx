@@ -279,6 +279,7 @@ const StudentPaymentsPage = () => {
         date: selectedMonth.format("YYYY-MM"),
         created_at: new Date().toISOString(),
       };
+      mockPayments.push(paymentData);
       message.success("Payment recorded successfully");
       setPaymentModalVisible(false);
       form.resetFields();
@@ -344,7 +345,7 @@ const StudentPaymentsPage = () => {
         return (
           <Space>
             <Progress
-              percent={Math.min(100, percentage)}
+              percent={Math.min(100, percentage).toFixed(1)}
               type="dashboard"
               strokeColor={statusColors[status]}
               size="small"
