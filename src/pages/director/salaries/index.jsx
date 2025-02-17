@@ -25,6 +25,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import { useSelector } from "react-redux";
 
 // Mock data
 const mockEmployees = [
@@ -164,6 +165,7 @@ const SalaryManagement = () => {
   const [editingSalary, setEditingSalary] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(moment());
   const [form] = Form.useForm();
+  const { theme } = useSelector((state) => state.theme);
 
   // Get employee details
   const getEmployee = (userId) => {
@@ -329,7 +331,7 @@ const SalaryManagement = () => {
   const stats = calculateMonthlyStats();
 
   return (
-    <div className="p-6">
+    <div>
       <div className="mb-6">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-2xl font-bold">Salary Management</h1>
@@ -353,27 +355,42 @@ const SalaryManagement = () => {
         />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          <Card>
+          <Card className="dark:bg-ant-dark-blue">
             <Statistic
-              title="Total Required"
+              title={<span className="dark:text-white">Total Required</span>}
               value={stats.totalRequired}
-              prefix="$"
+              prefix={<span className="dark:text-white">$</span>}
+              formatter={(value) => (
+                <span className="dark:text-white">
+                  {Number(value).toLocaleString()}
+                </span>
+              )}
               precision={2}
             />
           </Card>
-          <Card>
+          <Card className="dark:bg-ant-dark-blue">
             <Statistic
-              title="Total Paid"
+              title={<span className="dark:text-white">Total Paid</span>}
               value={stats.totalPaid}
-              prefix="$"
+              prefix={<span className="dark:text-white">$</span>}
+              formatter={(value) => (
+                <span className="dark:text-white">
+                  {Number(value).toLocaleString()}
+                </span>
+              )}
               precision={2}
             />
           </Card>
-          <Card>
+          <Card className="dark:bg-ant-dark-blue">
             <Statistic
-              title="Remaining"
+              title={<span className="dark:text-white">Remaining</span>}
               value={stats.remaining}
               prefix="$"
+              formatter={(value) => (
+                <span className="dark:text-white">
+                  {Number(value).toLocaleString()}
+                </span>
+              )}
               precision={2}
               valueStyle={{
                 color: stats.remaining > 0 ? "#cf1322" : "#3f8600",
@@ -414,6 +431,8 @@ const SalaryManagement = () => {
           )}
           columns={columns}
           rowKey="id"
+          scroll={{ x: true }}
+          className={theme === "dark" && "dark-table"}
         />
       </div>
 
