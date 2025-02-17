@@ -10,6 +10,7 @@ import {
   Popconfirm,
   message,
   Tag,
+  InputNumber,
 } from "antd";
 import {
   SearchOutlined,
@@ -59,6 +60,7 @@ const EmployeesPage = () => {
     {
       id: "550e8400-e29b-41d4-a716-446655440000",
       name: "Sarah Wilson",
+      salary: 2000000,
       username: "sarahw",
       phone: "+1234567890",
       position: "Receptionist",
@@ -68,6 +70,7 @@ const EmployeesPage = () => {
     {
       id: "550e8400-e29b-41d4-a716-446655440001",
       name: "Michael Chen",
+      salary: 1000000,
       username: "michaelc",
       phone: "+1234567891",
       position: "IT Support",
@@ -77,6 +80,7 @@ const EmployeesPage = () => {
     {
       id: "550e8400-e29b-41d4-a716-446655440002",
       name: "Emma Davis",
+      salary: 3000000,
       username: "emmad",
       phone: "+1234567892",
       position: "HR Manager",
@@ -165,6 +169,13 @@ const EmployeesPage = () => {
       title: "Username",
       dataIndex: "username",
       key: "username",
+    },
+    {
+      title: "Salary",
+      dataIndex: "salary",
+      key: "salary",
+      sorter: (a, b) => a.salary - b.salary,
+      render: (value) => Number(value).toLocaleString(),
     },
     {
       title: "Phone",
@@ -286,6 +297,17 @@ const EmployeesPage = () => {
             ]}
           >
             <Input.Password />
+          </Form.Item>
+          <Form.Item
+            name="salary"
+            label="Salary"
+            rules={[{ required: true, message: "Please input the salary!" }]}
+          >
+            <InputNumber
+              min={0}
+              className="w-full"
+              formatter={(value) => Number(value).toLocaleString()}
+            />
           </Form.Item>
           <Form.Item
             name="phone"
