@@ -20,6 +20,7 @@ import {
   DatePicker,
 } from "antd";
 import moment from "moment";
+import { useSelector } from "react-redux";
 
 const { Title, Text } = Typography;
 
@@ -225,6 +226,7 @@ const StudentPaymentsPage = () => {
   const [paymentHistoryModalVisible, setPaymentHistoryModalVisible] =
     useState(false);
   const [selectedStudentPayments, setSelectedStudentPayments] = useState([]);
+  const { theme } = useSelector((state) => state.theme);
 
   // Calculate required payment amount with discount
   const calculateRequiredAmount = (student) => {
@@ -335,8 +337,7 @@ const StudentPaymentsPage = () => {
       title: `Payment`,
       key: "status-visual",
       render: (_, record) => {
-        const { paidAmount, remainingAmount, percentage, status } =
-          getPaymentStatus(record);
+        const { percentage, status } = getPaymentStatus(record);
         const statusColors = {
           full: "#52c41a",
           partial: "#faad14",
@@ -349,6 +350,10 @@ const StudentPaymentsPage = () => {
               type="dashboard"
               strokeColor={statusColors[status]}
               size="small"
+              trailColor={theme === "dark" && "gray"}
+              format={(percent) => (
+                <span className="dark:text-white">{percent}%</span>
+              )}
             />
             <Button
               type="default"
@@ -402,126 +407,122 @@ const StudentPaymentsPage = () => {
   ];
 
   return (
-    <div className="p-6">
-      <Card>
-        <Row gutter={24} className="mb-6">
-          <Col span={12}>
-            <Title level={3}>Monthly Payments</Title>
-          </Col>
-          <Col span={12} style={{ textAlign: "right" }}>
-            <Space size="large">
-              <DatePicker.MonthPicker
-                // picker="month"
-                // value={selectedMonth}
-                onChange={setSelectedMonth}
-                allowClear={false}
-              />
-              <Statistic
-                title="Total Collected"
-                value={
-                  mockStudents.reduce(
-                    (sum, student) =>
-                      sum + getPaymentStatus(student).paidAmount,
-                    0
-                  ) / 1000
-                }
-                prefix="$"
-                suffix="k"
-              />
-            </Space>
-          </Col>
-        </Row>
-
-        <Table
-          columns={columns}
-          dataSource={mockStudents}
-          rowKey="id"
-          loading={loading}
-          scroll={{ x: true }}
-        />
-
-        {/* Payment Modal */}
-        <Modal
-          title={`Record Payment - ${selectedStudent?.name}`}
-          open={paymentModalVisible}
-          onCancel={() => {
-            setPaymentModalVisible(false);
-            form.resetFields();
-          }}
-          footer={null}
-        >
-          <Form form={form} onFinish={handlePayment} layout="vertical">
-            <Form.Item
-              name="amount"
-              label="Payment Amount"
-              rules={[
-                { required: true, message: "Please enter payment amount" },
-              ]}
-            >
-              <InputNumber
-                style={{ width: "100%" }}
-                formatter={(value) =>
-                  `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                }
-                parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-              />
-            </Form.Item>
-
-            <Form.Item>
-              <Space>
-                <Button type="primary" htmlType="submit" loading={loading}>
-                  Record Payment
-                </Button>
-                <Button
-                  onClick={() => {
-                    setPaymentModalVisible(false);
-                    form.resetFields();
-                  }}
-                >
-                  Cancel
-                </Button>
-              </Space>
-            </Form.Item>
-          </Form>
-        </Modal>
-
-        {/* Payment History Modal */}
-        <Modal
-          title={`Payment History - ${selectedStudent?.name}`}
-          open={paymentHistoryModalVisible}
-          onCancel={() => setPaymentHistoryModalVisible(false)}
-          footer={null}
-          width={600}
-        >
-          <Table
-            dataSource={selectedStudentPayments}
-            columns={[
-              {
-                title: "Date",
-                key: "date",
-                render: (_, record) =>
-                  moment(record.created_at).format("YYYY-MM-DD HH:mm"),
-              },
-              {
-                title: "Amount",
-                dataIndex: "amount",
-                render: (amount) => `$${(amount / 1000).toFixed(2)}k`,
-              },
-              {
-                title: "Status",
-                dataIndex: "status",
-                render: (status) => (
-                  <Tag color={status ? "success" : "error"}>
-                    {status ? "Successful" : "Failed"}
-                  </Tag>
-                ),
-              },
-            ]}
-            pagination={false}
-            rowKey="id"
+    <div className="p-1">
+      <div className="mb-6 flex items-center justify-between gap-2 flex-col md:flex-row">
+        <div>
+          <h1 className={`text-2xl font-bold dark:text-white`}>
+            Payments Management
+          </h1>
+        </div>
+        <div className="flex items-center gap-2 flex-col sm:flex-row">
+          <DatePicker.MonthPicker
+            // picker="month"
+            // value={selectedMonth}
+            onChange={setSelectedMonth}
+            allowClear={false}
           />
-        </Modal>
-      </Card>
+          <div className="flex items-center gap-2">
+            <p className="text-lg text-gray-400">Collected:</p>
+            <Statistic
+              valueStyle={{ color: theme === "dark" ? "white" : "black" }}
+              value={mockStudents.reduce(
+                (sum, student) => sum + getPaymentStatus(student).paidAmount,
+                0
+              )}
+              prefix="$"
+            />
+          </div>
+        </div>
+      </div>
+
+      <Table
+        columns={columns}
+        dataSource={mockStudents}
+        rowKey="id"
+        loading={loading}
+        scroll={{ x: true }}
+        className={theme === "dark" && "dark-table"}
+      />
+
+      {/* Payment Modal */}
+      <Modal
+        title={`Record Payment - ${selectedStudent?.name}`}
+        open={paymentModalVisible}
+        onCancel={() => {
+          setPaymentModalVisible(false);
+          form.resetFields();
+        }}
+        footer={null}
+      >
+        <Form form={form} onFinish={handlePayment} layout="vertical">
+          <Form.Item
+            name="amount"
+            label="Payment Amount"
+            rules={[{ required: true, message: "Please enter payment amount" }]}
+          >
+            <InputNumber
+              style={{ width: "100%" }}
+              formatter={(value) =>
+                `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+              }
+              parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+            />
+          </Form.Item>
+
+          <Form.Item>
+            <Space>
+              <Button type="primary" htmlType="submit" loading={loading}>
+                Record Payment
+              </Button>
+              <Button
+                onClick={() => {
+                  setPaymentModalVisible(false);
+                  form.resetFields();
+                }}
+              >
+                Cancel
+              </Button>
+            </Space>
+          </Form.Item>
+        </Form>
+      </Modal>
+
+      {/* Payment History Modal */}
+      <Modal
+        title={`Payment History - ${selectedStudent?.name}`}
+        open={paymentHistoryModalVisible}
+        onCancel={() => setPaymentHistoryModalVisible(false)}
+        footer={null}
+        width={600}
+      >
+        <Table
+          dataSource={selectedStudentPayments}
+          columns={[
+            {
+              title: "Date",
+              key: "date",
+              render: (_, record) =>
+                moment(record.created_at).format("YYYY-MM-DD HH:mm"),
+            },
+            {
+              title: "Amount",
+              dataIndex: "amount",
+              render: (amount) => `$${(amount / 1000).toFixed(2)}k`,
+            },
+            {
+              title: "Status",
+              dataIndex: "status",
+              render: (status) => (
+                <Tag color={status ? "success" : "error"}>
+                  {status ? "Successful" : "Failed"}
+                </Tag>
+              ),
+            },
+          ]}
+          pagination={false}
+          rowKey="id"
+        />
+      </Modal>
     </div>
   );
 };
