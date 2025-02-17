@@ -218,6 +218,7 @@ const TeachersPage = () => {
       </div>
 
       <Table
+        scroll={{ x: true }}
         columns={columns}
         dataSource={filteredTeachers}
         rowKey="id"
