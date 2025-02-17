@@ -17,6 +17,7 @@ import {
   Tag,
 } from "antd";
 import { WeeklySchedule } from "../../../components";
+import { useSelector } from "react-redux";
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -60,6 +61,7 @@ const GroupManagement = () => {
   const [editingGroup, setEditingGroup] = useState(null);
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
+  const { theme } = useSelector((state) => state.theme);
 
   // Available days options
   const daysOptions = [
@@ -220,129 +222,130 @@ const GroupManagement = () => {
   ];
 
   return (
-    <div className="p-6">
-      <Card className="mb-6">
-        <div className="flex justify-between items-center mb-6">
-          <Title level={3}>Group Management</Title>
-          <Button
-            type="primary"
-            icon={<i className="fa-solid fa-plus" />}
-            onClick={() => showModal()}
-          >
-            Add New Group
-          </Button>
-        </div>
+    <div>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className={`text-2xl font-bold dark:text-white`}>
+          Groups Management
+        </h1>
+        <Button
+          type="primary"
+          icon={<i className="fa-solid fa-plus" />}
+          onClick={() => showModal()}
+        >
+          Add New Group
+        </Button>
+      </div>
 
+      <div className="mt-2 mb-10">
         <Table
           columns={columns}
           dataSource={groups}
           rowKey="id"
           scroll={{ x: true }}
+          className={theme === "dark" && "dark-table"}
         />
+      </div>
 
-        <Modal
-          title={editingGroup ? "Edit Group" : "Create New Group"}
-          open={isModalVisible}
-          onOk={handleSubmit}
-          onCancel={handleCancel}
-          confirmLoading={loading}
-          width={800}
-        >
-          <Form form={form} layout="vertical">
+      <Modal
+        title={editingGroup ? "Edit Group" : "Create New Group"}
+        open={isModalVisible}
+        onOk={handleSubmit}
+        onCancel={handleCancel}
+        confirmLoading={loading}
+        width={800}
+      >
+        <Form form={form} layout="vertical">
+          <Form.Item
+            name="name"
+            label="Group Name"
+            rules={[{ required: true, message: "Please enter group name" }]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            name="days"
+            label="Days"
+            rules={[{ required: true, message: "Please select days" }]}
+          >
+            <Select options={daysOptions} />
+          </Form.Item>
+
+          <Space style={{ width: "100%" }} className="mb-4">
             <Form.Item
-              name="name"
-              label="Group Name"
-              rules={[{ required: true, message: "Please enter group name" }]}
+              name="start_time"
+              label="Start Time"
+              rules={[{ required: true, message: "Please select start time" }]}
             >
-              <Input />
-            </Form.Item>
-
-            <Form.Item
-              name="days"
-              label="Days"
-              rules={[{ required: true, message: "Please select days" }]}
-            >
-              <Select options={daysOptions} />
-            </Form.Item>
-
-            <Space style={{ width: "100%" }} className="mb-4">
-              <Form.Item
-                name="start_time"
-                label="Start Time"
-                rules={[
-                  { required: true, message: "Please select start time" },
-                ]}
-              >
-                <TimePicker format="HH:mm" />
-              </Form.Item>
-
-              <Form.Item
-                name="end_time"
-                label="End Time"
-                rules={[{ required: true, message: "Please select end time" }]}
-              >
-                <TimePicker format="HH:mm" />
-              </Form.Item>
-            </Space>
-
-            <Form.Item
-              name="level"
-              label="Level"
-              rules={[{ required: true, message: "Please enter level" }]}
-            >
-              <Select>
-                {[1, 2, 3, 4, 5].map((level) => (
-                  <Option key={level} value={level}>
-                    Level {level}
-                  </Option>
-                ))}
-              </Select>
+              <TimePicker format="HH:mm" />
             </Form.Item>
 
             <Form.Item
-              name="teacher_id"
-              label="Teacher"
-              rules={[{ required: true, message: "Please select teacher" }]}
+              name="end_time"
+              label="End Time"
+              rules={[{ required: true, message: "Please select end time" }]}
             >
-              <Select>
-                {mockTeachers.map((teacher) => (
-                  <Option key={teacher.id} value={teacher.id}>
-                    {teacher.name}
-                  </Option>
-                ))}
-              </Select>
+              <TimePicker format="HH:mm" />
             </Form.Item>
+          </Space>
 
-            <Form.Item name="support_teacher_id" label="Support Teacher">
-              <Select allowClear>
-                {mockTeachers.map((teacher) => (
-                  <Option key={teacher.id} value={teacher.id}>
-                    {teacher.name}
-                  </Option>
-                ))}
-              </Select>
-            </Form.Item>
+          <Form.Item
+            name="level"
+            label="Level"
+            rules={[{ required: true, message: "Please enter level" }]}
+          >
+            <Select>
+              {[1, 2, 3, 4, 5].map((level) => (
+                <Option key={level} value={level}>
+                  Level {level}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
 
-            <Form.Item
-              name="field_id"
-              label="Field"
-              rules={[{ required: true, message: "Please select field" }]}
-            >
-              <Select>
-                {mockFields.map((field) => (
-                  <Option key={field.id} value={field.id}>
-                    {field.name}
-                  </Option>
-                ))}
-              </Select>
-            </Form.Item>
+          <Form.Item
+            name="teacher_id"
+            label="Teacher"
+            rules={[{ required: true, message: "Please select teacher" }]}
+          >
+            <Select>
+              {mockTeachers.map((teacher) => (
+                <Option key={teacher.id} value={teacher.id}>
+                  {teacher.name}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
 
-            <Form.Item name="description" label="Description">
-              <TextArea rows={4} />
-            </Form.Item>
-          </Form>
-        </Modal>
-      </Card>
+          <Form.Item name="support_teacher_id" label="Support Teacher">
+            <Select allowClear>
+              {mockTeachers.map((teacher) => (
+                <Option key={teacher.id} value={teacher.id}>
+                  {teacher.name}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+
+          <Form.Item
+            name="field_id"
+            label="Field"
+            rules={[{ required: true, message: "Please select field" }]}
+          >
+            <Select>
+              {mockFields.map((field) => (
+                <Option key={field.id} value={field.id}>
+                  {field.name}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+
+          <Form.Item name="description" label="Description">
+            <TextArea rows={4} />
+          </Form.Item>
+        </Form>
+      </Modal>
 
       <WeeklySchedule groups={groups} />
     </div>
