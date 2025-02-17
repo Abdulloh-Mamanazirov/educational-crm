@@ -10,6 +10,7 @@ import {
   Select,
   message,
   Popconfirm,
+  InputNumber,
 } from "antd";
 import { useSelector } from "react-redux";
 
@@ -29,6 +30,7 @@ const mockTeachers = [
   {
     id: "550e8400-e29b-41d4-a716-446655440000",
     name: "John Smith",
+    salary: 500000,
     username: "jsmith",
     phone: "+1234567890",
     field_id: "1",
@@ -38,6 +40,7 @@ const mockTeachers = [
   {
     id: "550e8400-e29b-41d4-a716-446655440001",
     name: "Sarah Johnson",
+    salary: 1000000,
     username: "sjohnson",
     phone: "+1234567891",
     field_id: "2",
@@ -136,6 +139,13 @@ const TeachersPage = () => {
       key: "phone",
     },
     {
+      title: "Salary",
+      dataIndex: "salary",
+      key: "salary",
+      sorter: (a, b) => a.salary - b.salary,
+      render: (value) => Number(value).toLocaleString(),
+    },
+    {
       title: "Field",
       dataIndex: "field_id",
       key: "field_id",
@@ -229,6 +239,17 @@ const TeachersPage = () => {
             rules={[{ required: true, message: "Please input the name!" }]}
           >
             <Input />
+          </Form.Item>
+          <Form.Item
+            name="salary"
+            label="Salary"
+            rules={[{ required: true, message: "Please input the salary!" }]}
+          >
+            <InputNumber
+              min={0}
+              className="w-full"
+              formatter={(value) => Number(value).toLocaleString()}
+            />
           </Form.Item>
           <Form.Item
             name="username"
