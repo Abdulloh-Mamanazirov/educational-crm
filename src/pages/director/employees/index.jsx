@@ -252,6 +252,7 @@ const EmployeesPage = () => {
       </div>
 
       <Table
+        scroll={{ x: true }}
         columns={columns}
         dataSource={filteredEmployees}
         loading={loading}
