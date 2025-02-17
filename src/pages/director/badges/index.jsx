@@ -192,7 +192,7 @@ const BadgesManagement = () => {
               <img
                 src={badge.photo}
                 alt={badge.name}
-                className="w-12 h-12 rounded-full mr-4 object-cover"
+                className="w-20 h-20 rounded-full mr-4 object-cover"
               />
               <div>
                 <h3 className="text-lg font-semibold">{badge.name}</h3>
