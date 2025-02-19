@@ -8,6 +8,7 @@ import DirectorStudentPayments from "./payments";
 import DirectorSalaries from "./salaries";
 import DirectorExpenses from "./expenses";
 import DirectorBadges from "./badges";
+import DirectorAnnouncements from "./announcements";
 
 export const directorRoutes = [
   {
@@ -95,6 +96,15 @@ export const directorRoutes = [
     element: <DirectorBadges />,
     label: "Badges",
     icon: <span className="fa-solid fa-award" />,
+    showInMenu: true,
+    roles: ["director"],
+  },
+  {
+    id: 510,
+    path: "/director/announcements",
+    element: <DirectorAnnouncements />,
+    label: "Announcements",
+    icon: <span className="fa-solid fa-bullhorn" />,
     showInMenu: true,
     roles: ["director"],
   },
