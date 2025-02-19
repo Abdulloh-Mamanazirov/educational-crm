@@ -16,7 +16,6 @@ import {
   Typography,
   Popconfirm,
   Tag,
-  Alert,
 } from "antd";
 import {
   LineChart,
@@ -32,8 +31,8 @@ import {
   Cell,
 } from "recharts";
 import moment from "moment";
+import { useSelector } from "react-redux";
 
-const { Title, Text } = Typography;
 const { TextArea } = Input;
 const { Option } = Select;
 
@@ -89,6 +88,7 @@ const ExpenseManagement = () => {
     moment().endOf("month"),
   ]);
   const [selectedTypes, setSelectedTypes] = useState([]);
+  const { theme } = useSelector((state) => state.theme);
 
   // Filter expenses based on date range and selected types
   const filteredExpenses = expenses.filter((expense) => {
@@ -236,85 +236,87 @@ const ExpenseManagement = () => {
 
   return (
     <div className="p-6">
+      <div>
+        <h1 className="text-2xl font-bold">Expenses Management</h1>
+        <div className="flex items-center gap-3 my-5 flex-wrap">
+          <DatePicker.RangePicker
+            onChange={(e) => {
+              setDateRange([
+                e[0].$d.toLocaleDateString(),
+                e[1].$d.toLocaleDateString(),
+              ]);
+            }}
+            allowClear={false}
+          />
+          <Select
+            mode="multiple"
+            placeholder="Filter by type"
+            value={selectedTypes}
+            onChange={setSelectedTypes}
+            style={{ width: 300 }}
+          >
+            {expenseTypes.map((type) => (
+              <Option key={type} value={type}>
+                {type}
+              </Option>
+            ))}
+          </Select>
+          <Button
+            type="primary"
+            icon={<i className="fa-solid fa-plus" />}
+            onClick={() => {
+              setEditingExpense(null);
+              form.resetFields();
+              setIsModalVisible(true);
+            }}
+          >
+            Add Expense
+          </Button>
+        </div>
+      </div>
+
+      <div className="flex items-center flex-wrap my-5 gap-3 justify-between">
+        <Card className="flex-1 dark:bg-dark-l">
+          <Statistic
+            title={<span className="dark:text-white">Total Expenses</span>}
+            formatter={(value) => (
+              <span className="dark:text-white text-nowrap">
+                {value.toLocaleString()}
+              </span>
+            )}
+            value={totalExpenses / 1000}
+            precision={2}
+            prefix="$"
+            suffix="k"
+          />
+        </Card>
+        <Card className="flex-1 dark:bg-dark-l">
+          <Statistic
+            title={<span className="dark:text-white">Average Expense</span>}
+            formatter={(value) => (
+              <span className="dark:text-white text-nowrap">
+                {value.toLocaleString()}
+              </span>
+            )}
+            value={averageExpense / 1000}
+            precision={2}
+            prefix="$"
+            suffix="k"
+          />
+        </Card>
+        <Card className="flex-1 dark:bg-dark-l">
+          <Statistic
+            title={<span className="dark:text-white">Number of Expenses</span>}
+            formatter={(value) => (
+              <span className="dark:text-white text-nowrap">
+                {value.toLocaleString()}
+              </span>
+            )}
+            value={filteredExpenses.length}
+          />
+        </Card>
+      </div>
       <Row gutter={[24, 24]}>
-        <Col span={24}>
-          <Card>
-            <Row gutter={24} justify="space-between" align="middle">
-              <Col>
-                <Title level={3}>Expense Management</Title>
-              </Col>
-              <Col>
-                <Space size="large">
-                  <DatePicker.RangePicker
-                    onChange={(e) => {
-                      setDateRange([
-                        e[0].$d.toLocaleDateString(),
-                        e[1].$d.toLocaleDateString(),
-                      ]);
-                    }}
-                    allowClear={false}
-                  />
-                  <Select
-                    mode="multiple"
-                    placeholder="Filter by type"
-                    value={selectedTypes}
-                    onChange={setSelectedTypes}
-                    style={{ width: 300 }}
-                  >
-                    {expenseTypes.map((type) => (
-                      <Option key={type} value={type}>
-                        {type}
-                      </Option>
-                    ))}
-                  </Select>
-                  <Button
-                    type="primary"
-                    icon={<i className="fa-solid fa-plus" />}
-                    onClick={() => {
-                      setEditingExpense(null);
-                      form.resetFields();
-                      setIsModalVisible(true);
-                    }}
-                  >
-                    Add Expense
-                  </Button>
-                </Space>
-              </Col>
-            </Row>
-          </Card>
-        </Col>
-
-        <Col span={8}>
-          <Card>
-            <Statistic
-              title="Total Expenses"
-              value={totalExpenses / 1000}
-              precision={2}
-              prefix="$"
-              suffix="k"
-            />
-          </Card>
-        </Col>
-        <Col span={8}>
-          <Card>
-            <Statistic
-              title="Average Expense"
-              value={averageExpense / 1000}
-              precision={2}
-              prefix="$"
-              suffix="k"
-            />
-          </Card>
-        </Col>
-        <Col span={8}>
-          <Card>
-            <Statistic
-              title="Number of Expenses"
-              value={filteredExpenses.length}
-            />
-          </Card>
-        </Col>
-
         <Col span={12}>
           <Card title="Expenses Over Time">
             <ResponsiveContainer width="100%" height={300}>
@@ -363,14 +365,13 @@ const ExpenseManagement = () => {
         </Col>
 
         <Col span={24}>
-          <Card>
-            <Table
-              columns={columns}
-              dataSource={filteredExpenses}
-              rowKey="id"
-              scroll={{ x: true }}
-            />
-          </Card>
+          <Table
+            columns={columns}
+            dataSource={filteredExpenses}
+            rowKey="id"
+            scroll={{ x: true }}
+            className={theme === "dark" && "dark-table"}
+          />
         </Col>
       </Row>
 

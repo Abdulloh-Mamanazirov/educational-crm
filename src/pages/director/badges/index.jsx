@@ -187,12 +187,16 @@ const BadgesManagement = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {badges.map((badge) => (
-          <Card key={badge.id} hoverable className="shadow-md">
+          <Card
+            key={badge.id}
+            hoverable
+            className="shadow-md dark:bg-black dark:text-white"
+          >
             <div className="flex items-center mb-4">
               <img
                 src={badge.photo}
                 alt={badge.name}
-                className="w-20 h-20 rounded-full mr-4 object-cover"
+                className="w-20 h-20 aspect-square rounded-full mr-4 object-cover"
               />
               <div>
                 <h3 className="text-lg font-semibold">{badge.name}</h3>

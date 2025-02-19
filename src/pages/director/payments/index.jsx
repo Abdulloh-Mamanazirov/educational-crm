@@ -407,7 +407,7 @@ const StudentPaymentsPage = () => {
   ];
 
   return (
-    <div className="p-1">
+    <div className="p-6">
       <div className="mb-6 flex items-center justify-between gap-2 flex-col md:flex-row">
         <div>
           <h1 className={`text-2xl font-bold dark:text-white`}>

@@ -331,7 +331,7 @@ const SalaryManagement = () => {
   const stats = calculateMonthlyStats();
 
   return (
-    <div>
+    <div className="p-6">
       <div className="mb-6">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-2xl font-bold">Salary Management</h1>
@@ -355,7 +355,7 @@ const SalaryManagement = () => {
         />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          <Card className="dark:bg-ant-dark-blue">
+          <Card className="dark:bg-black">
             <Statistic
               title={<span className="dark:text-white">Total Required</span>}
               value={stats.totalRequired}
@@ -368,7 +368,7 @@ const SalaryManagement = () => {
               precision={2}
             />
           </Card>
-          <Card className="dark:bg-ant-dark-blue">
+          <Card className="dark:bg-black">
             <Statistic
               title={<span className="dark:text-white">Total Paid</span>}
               value={stats.totalPaid}
@@ -381,7 +381,7 @@ const SalaryManagement = () => {
               precision={2}
             />
           </Card>
-          <Card className="dark:bg-ant-dark-blue">
+          <Card className="dark:bg-black">
             <Statistic
               title={<span className="dark:text-white">Remaining</span>}
               value={stats.remaining}

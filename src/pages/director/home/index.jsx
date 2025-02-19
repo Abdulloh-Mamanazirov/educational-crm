@@ -17,7 +17,7 @@ const Home = () => {
   };
 
   return (
-    <div>
+    <div className="p-6">
       <>
         <StatsCards data={initialData.stats} />
       </>

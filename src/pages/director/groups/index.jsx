@@ -21,7 +21,6 @@ import { useSelector } from "react-redux";
 
 const { Option } = Select;
 const { TextArea } = Input;
-const { Title } = Typography;
 
 // Mock data for teachers and fields
 const mockTeachers = [
@@ -222,7 +221,7 @@ const GroupManagement = () => {
   ];
 
   return (
-    <div>
+    <div className="p-6">
       <div className="flex justify-between items-center mb-6">
         <h1 className={`text-2xl font-bold dark:text-white`}>
           Groups Management
