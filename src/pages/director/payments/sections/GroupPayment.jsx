@@ -1,29 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import moment from "moment";
 import {
-  Card,
-  Table,
-  Tag,
   Button,
-  Modal,
   Form,
   InputNumber,
-  Select,
-  Space,
-  Typography,
-  Tooltip,
-  Badge,
   message,
-  Statistic,
+  Modal,
   Progress,
-  Row,
-  Col,
-  DatePicker,
+  Space,
+  Table,
+  Tag,
+  Tooltip,
+  Typography,
 } from "antd";
-import moment from "moment";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
 // Mock data
 const mockFields = [
@@ -56,114 +49,6 @@ const mockGroups = [
     days: "mon-wed-fri",
     start_time: "09:00",
     end_time: "10:30",
-  },
-];
-
-const mockStudents = [
-  {
-    id: "1",
-    name: "English Student 1",
-    username: "english_student_1",
-    phone: "1234567890",
-    discount: 10,
-  },
-  {
-    id: "2",
-    name: "English Student 2",
-    username: "english_student_2",
-    phone: "1234567890",
-    discount: 50,
-  },
-  {
-    id: "3",
-    name: "English Student 3",
-    username: "english_student_3",
-    phone: "1234567890",
-    discount: 0,
-  },
-  {
-    id: "4",
-    name: "English Student 4",
-    username: "english_student_4",
-    phone: "1234567890",
-    discount: 0,
-  },
-  {
-    id: "5",
-    name: "English Student 5",
-    username: "english_student_5",
-    phone: "1234567890",
-    discount: 0,
-  },
-  {
-    id: "6",
-    name: "Mathematics Student 1",
-    username: "mathematics_student_1",
-    phone: "1234567890",
-    discount: 0,
-  },
-  {
-    id: "7",
-    name: "Mathematics Student 2",
-    username: "mathematics_student_2",
-    phone: "1234567890",
-    discount: 0,
-  },
-  {
-    id: "8",
-    name: "Mathematics Student 3",
-    username: "mathematics_student_3",
-    phone: "1234567890",
-    discount: 0,
-  },
-  {
-    id: "9",
-    name: "Mathematics Student 4",
-    username: "mathematics_student_4",
-    phone: "1234567890",
-    discount: 0,
-  },
-  {
-    id: "10",
-    name: "Mathematics Student 5",
-    username: "mathematics_student_5",
-    phone: "1234567890",
-    discount: 0,
-  },
-  {
-    id: "11",
-    name: "Japanese Student 1",
-    username: "japanese_student_1",
-    phone: "1234567890",
-    discount: 0,
-  },
-  {
-    id: "12",
-    name: "Japanese Student 2",
-    username: "japanese_student_2",
-    phone: "1234567890",
-    discount: 0,
-  },
-  {
-    id: "13",
-    name: "Japanese Student 3",
-    username: "japanese_student_3",
-    phone: "1234567890",
-    discount: 0,
-  },
-  {
-    id: "14",
-    name: "Japanese Student 4",
-    username: "japanese_student_4",
-    phone: "1234567890",
-    discount: 0,
-  },
-  {
-    id: "15",
-    name: "Japanese Student 5",
-    username: "japanese_student_5",
-    phone: "1234567890",
-    discount: 0,
   },
 ];
 
@@ -218,11 +103,13 @@ const mockPayments = [
     created_at: "2025-02-01T00:00:00Z",
   },
 ];
-const StudentPaymentsPage = () => {
+
+const GroupPayment = ({ students }) => {
+  const [form] = Form.useForm();
+  const { hash } = useLocation();
   const [loading, setLoading] = useState(false);
   const [paymentModalVisible, setPaymentModalVisible] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState(null);
-  const [form] = Form.useForm();
   const [selectedMonth, setSelectedMonth] = useState(moment());
   const [paymentHistoryModalVisible, setPaymentHistoryModalVisible] =
     useState(false);
@@ -408,58 +295,10 @@ const StudentPaymentsPage = () => {
   ];
 
   return (
-    <div className="p-6">
-      <div className="mb-6 flex items-center justify-between gap-2 flex-col md:flex-row">
-        <div>
-          <h1 className={`text-2xl font-bold dark:text-white`}>
-            Payments Management
-          </h1>
-        </div>
-        <div className="flex items-center gap-2 flex-col sm:flex-row">
-          <DatePicker.MonthPicker
-            // picker="month"
-            // value={selectedMonth}
-            onChange={setSelectedMonth}
-            allowClear={false}
-          />
-          <div className="flex items-center gap-2">
-            <p className="text-lg text-gray-400">Collected:</p>
-            <Statistic
-              valueStyle={{ color: theme === "dark" ? "white" : "black" }}
-              value={mockStudents.reduce(
-                (sum, student) => sum + getPaymentStatus(student).paidAmount,
-                0
-              )}
-              prefix="$"
-            />
-          </div>
-        </div>
-      </div>
-      {/* 
-      <div className="flex items-center gap-3 justify-between">
-        {mockGroups?.map?.((group) => {
-          return (
-            <Card
-              hoverable
-              onClick={() => (window.location.hash = group?.id)}
-              title={<span className="dark:text-white">{group?.name}</span>}
-              className="flex-1 dark:text-white"
-            >
-              <div className="flex items-center gap-3">
-                <p>{group.days}</p>
-                <p>•</p>
-                <p>
-                  {group.start_time} - {group.end_time}
-                </p>
-              </div>
-            </Card>
-          );
-        })}
-      </div> */}
-
+    <div>
       <Table
         columns={columns}
-        dataSource={mockStudents}
+        dataSource={students}
         rowKey="id"
         loading={loading}
         scroll={{ x: true }}
@@ -549,4 +388,4 @@ const StudentPaymentsPage = () => {
   );
 };
 
-export default StudentPaymentsPage;
+export default GroupPayment;
