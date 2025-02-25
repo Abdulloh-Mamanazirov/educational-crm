@@ -47,6 +47,19 @@ const Login = () => {
       setTimeout(() => {
         sessionStorage.setItem("crm-token", foundUser.token);
         sessionStorage.setItem("crm-role", foundUser.role);
+        if (foundUser.role === "admin")
+          sessionStorage.setItem(
+            "crm-admin-routes",
+            JSON.stringify([
+              "dashboard",
+              "teachers",
+              "students",
+              "groups",
+              "payments",
+              "expenses",
+              "profile",
+            ])
+          );
 
         const roleHomePaths = {
           teacher: "/teacher/dashboard",
