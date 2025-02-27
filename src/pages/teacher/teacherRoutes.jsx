@@ -70,6 +70,20 @@ export const teacherRoutes = [
     roles: ["teacher"],
   },
   {
+    id: 208,
+    path: "/teacher/duolingo",
+    element: <></>,
+    label: "Duolingo",
+    icon: (
+      <img
+        src="https://schools-cdn.duolingo.com/favicon.ico"
+        className="lg:w-5"
+      />
+    ),
+    showInMenu: true,
+    roles: ["teacher"],
+  },
+  {
     id: 201,
     path: "/teacher/profile",
     element: <TeacherProfile />,
