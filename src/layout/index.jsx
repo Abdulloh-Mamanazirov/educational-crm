@@ -88,13 +88,23 @@ const MainLayout = () => {
         <Menu
           mode="inline"
           selectedKeys={[location.pathname]}
-          onClick={({ key }) => navigate(key)}
+          onClick={({ key }) => {
+            if (key === "/teacher/duolingo")
+              return window.open("https://schools.duolingo.com");
+            else if (key === "/student/duolingo")
+              return window.open("https://duolingo.com");
+            else return navigate(key);
+          }}
           className="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 border-r-0"
         >
           {siderMenu.map((item) => (
             <Menu.Item
               key={item.key}
               icon={item.icon}
+              className={
+                item.key.includes("duolingo") &&
+                "bg-gradient-to-r from-green-300 via-green-100 to-transparent dark:from-green-700 dark:via-green-600"
+              }
               style={{
                 color:
                   theme === "dark" && location.pathname !== item.key
