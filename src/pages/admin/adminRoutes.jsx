@@ -10,6 +10,7 @@ import AdminSalaries from "./salaries";
 import AdminExpenses from "./expenses";
 import AdminBadges from "./badges";
 import AdminAnnouncements from "./announcements";
+import AdminLeads from "./leads";
 
 export const adminRoutes = [
   {
@@ -111,6 +112,15 @@ export const adminRoutes = [
   },
   {
     id: 411,
+    path: "/admin/leads",
+    element: <AdminLeads />,
+    label: "Leads Management",
+    icon: <span className="fa-solid fa-list-check" />,
+    showInMenu: true,
+    roles: ["admin"],
+  },
+  {
+    id: 412,
     path: "/admin/profile",
     element: <AdminProfile />,
     label: "Profile",
