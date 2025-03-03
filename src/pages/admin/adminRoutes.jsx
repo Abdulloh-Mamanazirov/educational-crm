@@ -2,6 +2,7 @@ import AdminProfile from "./profile";
 import AdminDashboard from "./home";
 import AdminTeachers from "./teachers";
 import AdminStudents from "./students";
+import AdminStudentsProfile from "./studentProfile";
 import AdminEmployees from "./employees";
 import AdminGroups from "./groups";
 import AdminGroupDetails from "./groupDetails";
@@ -38,6 +39,13 @@ export const adminRoutes = [
     label: "Students",
     icon: <span className="fa-solid fa-user-graduate" />,
     showInMenu: true,
+    roles: ["admin"],
+  },
+  {
+    id: 4021,
+    path: "/admin/students/:id",
+    element: <AdminStudentsProfile />,
+    showInMenu: false,
     roles: ["admin"],
   },
   {

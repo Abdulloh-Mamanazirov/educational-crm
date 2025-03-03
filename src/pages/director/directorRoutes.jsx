@@ -1,6 +1,7 @@
 import DirectorDashboard from "./home";
 import DirectorTeachers from "./teachers";
 import DirectorStudents from "./students";
+import DirectorStudentsProfile from "./studentProfile";
 import DirectorEmployees from "./employees";
 import DirectorGroups from "./groups";
 import DirectorGroupDetails from "./groupDetails";
@@ -38,6 +39,13 @@ export const directorRoutes = [
     icon: <span className="fa-solid fa-user-graduate" />,
     showInMenu: true,
     roles: ["director"],
+  },
+  {
+    id: 5021,
+    path: "/admin/students/:id",
+    element: <DirectorStudentsProfile />,
+    showInMenu: false,
+    roles: ["admin"],
   },
   {
     id: 503,
