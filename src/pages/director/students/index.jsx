@@ -12,13 +12,7 @@ import {
   Select,
   message,
 } from "antd";
-import {
-  SearchOutlined,
-  EditOutlined,
-  DeleteOutlined,
-  PlusOutlined,
-  UserAddOutlined,
-} from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const { Search } = Input;
@@ -68,6 +62,7 @@ const mockStudents = [
 ];
 
 const StudentsPage = () => {
+  const navigate = useNavigate();
   const [students, setStudents] = useState([]);
   const [groups, setGroups] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -226,6 +221,12 @@ const StudentsPage = () => {
       key: "actions",
       render: (_, record) => (
         <Space>
+          <Button
+            type="link"
+            icon={<span className="fa-solid fa-eye text-green-500" />}
+            onClick={() => navigate(record.id)}
+            title="See student"
+          />
           <Button
             type="link"
             icon={<span className="fa-solid fa-edit" />}
