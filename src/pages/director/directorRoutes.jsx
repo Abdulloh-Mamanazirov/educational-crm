@@ -11,6 +11,7 @@ import DirectorExpenses from "./expenses";
 import DirectorBadges from "./badges";
 import DirectorAnnouncements from "./announcements";
 import DirectorLeads from "./leads";
+import DirectorAdminAccess from "./adminAccess";
 
 export const directorRoutes = [
   {
@@ -123,6 +124,15 @@ export const directorRoutes = [
     element: <DirectorLeads />,
     label: "Leads Management",
     icon: <span className="fa-solid fa-list-check" />,
+    showInMenu: true,
+    roles: ["director"],
+  },
+  {
+    id: 512,
+    path: "/director/admin-access",
+    element: <DirectorAdminAccess />,
+    label: "Admin Access",
+    icon: <span className="fa-solid fa-user-shield" />,
     showInMenu: true,
     roles: ["director"],
   },
