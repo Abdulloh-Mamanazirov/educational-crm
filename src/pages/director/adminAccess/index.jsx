@@ -39,7 +39,7 @@ const AdminPermissionsPage = () => {
     <div className={`p-6 dark:text-white`}>
       <div className="flex justify-between items-center mb-6">
         <h1 className={`text-2xl font-bold dark:text-white`}>
-          Students Management
+          Admin Pages
         </h1>
         <div className="text-right">
           <Text className="dark:text-gray-300">

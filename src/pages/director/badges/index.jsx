@@ -190,7 +190,7 @@ const BadgesManagement = () => {
           <Card
             key={badge.id}
             hoverable
-            className="shadow-md dark:bg-black dark:text-white"
+            className="shadow-md dark:bg-gray-800 dark:text-white"
           >
             <div className="flex items-center mb-4">
               <img

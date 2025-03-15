@@ -555,39 +555,61 @@ const LeadManagement = () => {
       </div>
 
       <Tabs defaultActiveKey="leads" className="mb-6">
-        <TabPane tab="Leads" key="leads">
+        <TabPane
+          tab={<span className="dark:text-white">Leads</span>}
+          key="leads"
+          className="dark:text-white"
+        >
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-            <Card>
+            <Card className="dark:bg-gray-800">
               <Statistic
-                title="Total Leads"
                 value={totalLeads}
-                prefix={<span className="fa-solid fa-user-plus" />}
-              />
-            </Card>
-            <Card>
-              <Statistic
-                title="New Inquiries"
-                value={newInquiries}
-                prefix={<i className="fa fa-bell text-blue-500 mr-2"></i>}
-              />
-            </Card>
-            <Card>
-              <Statistic
-                title="Conversion Rate"
-                value={conversionRate}
-                suffix="%"
+                title={<span className="dark:text-white">Total Leads</span>}
+                formatter={() => (
+                  <span className="dark:text-white">{totalLeads}</span>
+                )}
                 prefix={
-                  <span className="fa-solid fa-circle-check text-green-500 mr-1" />
+                  <span className="fa-solid dark:text-white fa-user-plus" />
                 }
               />
             </Card>
-            <Card>
+            <Card className="dark:bg-gray-800">
               <Statistic
-                title="Multiple Follow-ups"
-                value={multipleContactRate}
-                suffix="%"
+                value={newInquiries}
+                title={<span className="dark:text-white">New Inquiries</span>}
+                formatter={() => (
+                  <span className="dark:text-white">{newInquiries}</span>
+                )}
                 prefix={
-                  <span className="fa-solid fa-phone text-orange-500 mr-1" />
+                  <i className="fa-solid dark:text-white fa-bell text-blue-500 mr-2"></i>
+                }
+              />
+            </Card>
+            <Card className="dark:bg-gray-800">
+              <Statistic
+                title={<span className="dark:text-white">Conversion Rate</span>}
+                value={conversionRate}
+                formatter={() => (
+                  <span className="dark:text-white">{conversionRate}%</span>
+                )}
+                prefix={
+                  <span className="fa-solid dark:text-white fa-circle-check text-green-500 mr-1" />
+                }
+              />
+            </Card>
+            <Card className="dark:bg-gray-800">
+              <Statistic
+                title={
+                  <span className="dark:text-white">Multiple Follow-Ups</span>
+                }
+                value={multipleContactRate}
+                formatter={() => (
+                  <span className="dark:text-white">
+                    {multipleContactRate}%
+                  </span>
+                )}
+                prefix={
+                  <span className="fa-solid dark:text-white fa-phone text-orange-500 mr-1" />
                 }
               />
             </Card>
@@ -663,7 +685,10 @@ const LeadManagement = () => {
           </div>
         </TabPane>
 
-        <TabPane tab="Analytics" key="analytics">
+        <TabPane
+          tab={<span className="dark:text-white">Analytics</span>}
+          key="analytics"
+        >
           <Card title="Lead Source Distribution">
             <div className="flex items-center justify-center h-64">
               {sourceData.length > 0 ? (

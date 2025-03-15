@@ -16,6 +16,7 @@ import {
   Typography,
   Popconfirm,
   Tag,
+  message
 } from "antd";
 import {
   LineChart,
@@ -276,35 +277,31 @@ const ExpenseManagement = () => {
       </div>
 
       <div className="flex items-center flex-wrap my-5 gap-3 justify-between">
-        <Card className="flex-1 dark:bg-dark-l">
+        <Card className="flex-1 dark:bg-gray-800">
           <Statistic
             title={<span className="dark:text-white">Total Expenses</span>}
             formatter={(value) => (
               <span className="dark:text-white text-nowrap">
-                {value.toLocaleString()}
+                $ {value.toLocaleString()}
               </span>
             )}
-            value={totalExpenses / 1000}
+            value={totalExpenses}
             precision={2}
-            prefix="$"
-            suffix="k"
           />
         </Card>
-        <Card className="flex-1 dark:bg-dark-l">
+        <Card className="flex-1 dark:bg-gray-800">
           <Statistic
             title={<span className="dark:text-white">Average Expense</span>}
             formatter={(value) => (
               <span className="dark:text-white text-nowrap">
-                {value.toLocaleString()}
+                $ {value.toLocaleString()}
               </span>
             )}
-            value={averageExpense / 1000}
+            value={averageExpense}
             precision={2}
-            prefix="$"
-            suffix="k"
           />
         </Card>
-        <Card className="flex-1 dark:bg-dark-l">
+        <Card className="flex-1 dark:bg-gray-800">
           <Statistic
             title={<span className="dark:text-white">Number of Expenses</span>}
             formatter={(value) => (
