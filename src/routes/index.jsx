@@ -3,6 +3,7 @@ import {
   teacherRoutes,
   studentRoutes,
   directorRoutes,
+  consultantRoutes,
   hiddenRoutes,
 } from "../pages";
 
@@ -15,4 +16,5 @@ export const allRoutes = [
   ...teacherRoutes,
   ...studentRoutes,
   ...directorRoutes,
+  ...consultantRoutes,
 ];
