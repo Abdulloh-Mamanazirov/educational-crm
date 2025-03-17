@@ -156,7 +156,7 @@ const AnnouncementsManagement = () => {
   const renderAnnouncement = (announcement) => (
     <Card
       key={announcement.id}
-      className="mb-4 dark:bg-dark-l dark:text-white"
+      className="mb-4 dark:bg-gray-800 dark:text-white"
       extra={
         <Space>
           <Button
