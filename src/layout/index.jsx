@@ -93,6 +93,10 @@ const MainLayout = () => {
               return window.open("https://schools.duolingo.com");
             else if (key === "/student/duolingo")
               return window.open("https://duolingo.com");
+            else if (key === "/consultant/universities")
+              return window.open(
+                "https://www.bachelorsportal.com/search/bachelor"
+              );
             else return navigate(key);
           }}
           className="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 border-r-0"
@@ -102,8 +106,11 @@ const MainLayout = () => {
               key={item.key}
               icon={item.icon}
               className={
-                item.key.includes("duolingo") &&
-                "bg-gradient-to-r from-green-300 via-green-100 to-transparent dark:from-green-700 dark:via-green-600"
+                item.key.includes("duolingo")
+                  ? "bg-gradient-to-r from-green-300 via-green-100 to-transparent dark:from-green-700 dark:via-green-600"
+                  : item.key.includes("universities")
+                  ? "bg-gradient-to-r from-cyan-400 via-cyan-100 to-transparent dark:from-cyan-900 dark:via-cyan-800"
+                  : ""
               }
               style={{
                 color:
