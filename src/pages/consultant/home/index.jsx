@@ -1,372 +1,246 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
-  Table,
+  Layout,
+  Spin,
+  Alert,
+  List,
+  Typography,
   Button,
-  Modal,
-  Form,
   Input,
-  Select,
-  Card,
-  Descriptions,
-  Tag,
+  Modal,
 } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import AddStudentForm from "./AddStudentForm";
+import ConsultantStudentManagementPage from "./ConsultantStudentManagementPage.jsx";
+import { servicePackages } from "./constants/consultingConstants";
 
-// Initial university data
-const initialUniversityData = [
-  {
-    id: 3,
-    name: "National University of Singapore",
-    country: "Singapore",
-    admissionRequirements: {
-      gpa: "3.5+",
-      tests: ["IELTS: 6.5+", "GRE: Optional"],
-      documents: [
-        "Transcripts",
-        "Personal Statement",
-        "2 Recommendation Letters",
-      ],
-    },
-    courses: [
-      {
-        name: "Data Science",
-        fee: 20000,
-      },
-      {
-        name: "Business Analytics",
-        fee: 25000,
-      },
-      {
-        name: "International Relations",
-        fee: 22000,
-      },
-    ],
-    scholarships: [
-      {
-        name: "ASEAN Undergraduate Scholarship",
-        amount: "Tuition + allowance",
-        eligibility: "ASEAN country citizens",
-      },
-      {
-        name: "Science & Technology Scholarship",
-        amount: "Full coverage",
-        eligibility: "Outstanding STEM students",
-      },
-    ],
-    accommodation: {
-      dorm: {
-        available: true,
-        monthlyCost: 10000,
-      },
-    },
-    application: "March 1 - April 1",
-  },
-  {
-    id: 1,
-    name: "Harvard University",
-    country: "United States",
-    admissionRequirements: {
-      gpa: "3.7+",
-      tests: ["TOEFL: 100+", "SAT: 1450+", "ACT: 33+"],
-      documents: [
-        "High School Transcripts",
-        "Personal Essay",
-        "3 Letters of Recommendation",
-        "Extracurricular Portfolio",
-      ],
-    },
-    courses: [
-      {
-        name: "Computer Science",
-        fee: 55000,
-      },
-      {
-        name: "Political Science",
-        fee: 52000,
-      },
-      {
-        name: "Biomedical Engineering",
-        fee: 58000,
-      },
-    ],
-    scholarships: [
-      {
-        name: "Harvard Financial Aid",
-        amount: "Need-based full coverage",
-        eligibility: "Low-income students",
-      },
-      {
-        name: "Presidential Scholarship",
-        amount: "Full tuition + stipend",
-        eligibility: "Academic excellence",
-      },
-    ],
-    accommodation: {
-      dorm: {
-        available: true,
-        monthlyCost: 15000,
-      },
-    },
-    application: "September 1 - January 1",
-  },
-];
+const { Content } = Layout;
+const { Title, Text } = Typography;
+const { Search } = Input;
 
-// Predefined lists for documents, requirements and courses
-const ALL_DOCUMENTS = [
-  "Transcripts",
-  "Personal Statement",
-  "Recommendation Letters",
-  "High School Diploma",
-  "Passport Copy",
-  "Academic CV",
-  "English Proficiency Test",
-  "Portfolio",
-  "Research Proposal",
-  "Motivation Letter",
-  "Professional Resume",
-];
+const ConsultantDashboard = () => {
+  const [students, setStudents] = useState([]);
+  const [filteredStudents, setFilteredStudents] = useState([]);
+  const [selectedStudentId, setSelectedStudentId] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isAddModalVisible, setIsAddModalVisible] = useState(false);
 
-const ALL_REQUIREMENTS = ["IELTS", "JLPT", "SAT", "TOEFL", "Duolingo"];
-
-const ALL_COURSES = [
-  "Computer Science",
-  "Business Analytics",
-  "Data Science",
-  "International Relations",
-  "Robotics Engineering",
-  "Marine Biology",
-  "Environmental Studies",
-  "Public Health",
-  "Digital Media",
-  "Sustainable Agriculture",
-  "Political Science",
-  "Biomedical Engineering",
-  "Japanese Studies",
-  "African Literature",
-];
-
-const UniversityManagement = () => {
-  const [universities, setUniversities] = useState(initialUniversityData);
-
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [form] = Form.useForm();
-
-  const columns = [
-    {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-    },
-    {
-      title: "Country",
-      dataIndex: "country",
-      key: "country",
-    },
-    {
-      title: "Courses",
-      dataIndex: "courses",
-      key: "courses",
-      render: (courses) => (
-        <div>
-          {courses.map((course) => (
-            <Tag key={course.name}>{course.name}</Tag>
-          ))}
-        </div>
-      ),
-    },
-    {
-      title: "Actions",
-      key: "actions",
-      render: (_, record) => (
-        <Button onClick={() => showUniversityDetails(record)}>
-          View Details
-        </Button>
-      ),
-    },
-  ];
-
-  const showUniversityDetails = (university) => {
-    Modal.info({
-      title: university.name,
-      width: 800,
-      content: (
-        <Card>
-          <Descriptions bordered column={1}>
-            <Descriptions.Item label="Country">
-              {university.country}
-            </Descriptions.Item>
-            <Descriptions.Item label="GPA Requirement">
-              {university.admissionRequirements.gpa}
-            </Descriptions.Item>
-            <Descriptions.Item label="Test Requirements">
-              {university.admissionRequirements.tests.join(", ")}
-            </Descriptions.Item>
-            <Descriptions.Item label="Required Documents">
-              {university.admissionRequirements.documents.join(", ")}
-            </Descriptions.Item>
-            <Descriptions.Item label="Courses">
-              {university.courses
-                .map((c) => `${c.name} ($${c.fee})`)
-                .join(", ")}
-            </Descriptions.Item>
-            <Descriptions.Item label="Scholarships">
-              {university.scholarships
-                .map((s) => `${s.name}: ${s.amount}`)
-                .join(", ")}
-            </Descriptions.Item>
-            <Descriptions.Item label="Accommodation">
-              {university.accommodation.dorm.available
-                ? `Available at $${university.accommodation.dorm.monthlyCost}/month`
-                : "Not Available"}
-            </Descriptions.Item>
-            <Descriptions.Item label="Application Period">
-              {university.application}
-            </Descriptions.Item>
-          </Descriptions>
-        </Card>
-      ),
-      onOk() {},
-    });
-  };
-
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-    form.resetFields();
-  };
-
-  const handleSubmit = (values) => {
-    const newUniversity = {
-      id: Date.now(),
-      name: values.name,
-      country: values.country,
-      admissionRequirements: {
-        gpa: values.gpa,
-        tests: values.tests,
-        documents: values.documents,
-      },
-      courses: values.courses.map((name) => ({
-        name,
-        fee: Math.floor(Math.random() * 30000) + 10000, // Random fee generation
-      })),
-      scholarships: [
-        {
-          name: "Default Scholarship",
-          amount: "Partial Tuition",
-          eligibility: "Various criteria",
-        },
-      ],
-      accommodation: {
-        dorm: {
-          available: true,
-          monthlyCost: Math.floor(Math.random() * 10000) + 5000, // Random cost
-        },
-      },
-      application: values.applicationPeriod,
+  // --- Fetch Student List ---
+  useEffect(() => {
+    const fetchStudents = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        // Replace with your actual API call to get students for this consultant
+        await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate API delay
+        const fetchedStudents = [
+          {
+            id: "101",
+            name: "Alice Wonderland",
+            email: "alice.w@example.com",
+            servicePackage: 1,
+            status: "Active",
+          },
+          {
+            id: "102",
+            name: "Bob The Builder",
+            email: "bob.b@example.com",
+            servicePackage: 3,
+            status: "Agreement Pending",
+          },
+          {
+            id: "103",
+            name: "Charlie Chaplin",
+            email: "charlie.c@example.com",
+            servicePackage: 2,
+            status: "Documents Pending",
+          },
+          // Add more dummy students
+        ];
+        setStudents(fetchedStudents);
+        setFilteredStudents(fetchedStudents); // Initialize filtered list
+      } catch (err) {
+        console.error("Failed to fetch students:", err);
+        setError("Could not load student list. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
     };
+    fetchStudents();
+  }, []); // Fetch only once on mount
 
-    setUniversities([...universities, newUniversity]);
-    setIsModalVisible(false);
-    form.resetFields();
+  // --- Handle Search ---
+  useEffect(() => {
+    const lowerSearchTerm = searchTerm.toLowerCase();
+    const filtered = students.filter(
+      (student) =>
+        student.name.toLowerCase().includes(lowerSearchTerm) ||
+        student.email.toLowerCase().includes(lowerSearchTerm)
+    );
+    setFilteredStudents(filtered);
+  }, [searchTerm, students]);
+
+  // --- Handle Selection ---
+  const handleSelectStudent = (studentId) => {
+    setSelectedStudentId(studentId);
   };
+
+  // --- Handle Back to List ---
+  const handleBackToList = () => {
+    setSelectedStudentId(null);
+    // Optional: re-fetch student list if data might have changed
+  };
+
+  const showAddStudentModal = () => {
+    setIsAddModalVisible(true);
+  };
+
+  const handleCancelAddStudent = () => {
+    setIsAddModalVisible(false);
+  };
+
+  const handleStudentAdded = (newStudent) => {
+    console.log("Student added:", newStudent);
+    setIsAddModalVisible(false); // Close modal
+    // Refresh the student list:
+    // Option 1: Re-fetch the whole list
+    // fetchStudents();
+    // Option 2: Add the new student to the existing state (if API returns enough info)
+    // setStudents(prev => [newStudent, ...prev]); // Add to beginning
+    // Make sure to update filteredStudents as well or refilter
+    message.info("Refreshing student list..."); // Give feedback
+    // Simplest reliable way is often to re-fetch:
+    fetchStudents(); // Assuming fetchStudents is defined in your dashboard
+  };
+
+  // --- Render Logic ---
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen dark:bg-gray-900">
+        <Spin size="large" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <Content className="p-4 sm:p-6 lg:p-8 dark:bg-gray-900">
+        <Alert message="Error" description={error} type="error" showIcon />
+      </Content>
+    );
+  }
 
   return (
-    <div className="container mx-auto p-4 dark:bg-gray-900 dark:text-white">
-      <Card
-        title="University Management"
-        extra={
-          <Button type="primary" icon={<PlusOutlined />} onClick={showModal}>
-            Add University
-          </Button>
-        }
-      >
-        <Table columns={columns} dataSource={universities} rowKey="id" />
-      </Card>
-
-      <Modal
-        title="Add New University"
-        open={isModalVisible}
-        onCancel={handleCancel}
-        footer={null}
-      >
-        <Form form={form} layout="vertical" onFinish={handleSubmit}>
-          <Form.Item
-            name="name"
-            label="University Name"
-            rules={[
-              { required: true, message: "Please input university name!" },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item
-            name="country"
-            label="Country"
-            rules={[{ required: true, message: "Please input country!" }]}
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item
-            name="gpa"
-            label="GPA Requirement"
-            rules={[
-              { required: true, message: "Please input GPA requirement!" },
-            ]}
-          >
-            <Input placeholder="3.5+" />
-          </Form.Item>
-
-          <Form.Item name="tests" label="Test Requirements">
-            <Select
-              mode="multiple"
-              style={{ width: "100%" }}
-              placeholder="Select requirements"
-              options={ALL_REQUIREMENTS.map((req) => ({
-                label: req,
-                value: req,
-              }))}
-            />
-          </Form.Item>
-
-          <Form.Item name="documents" label="Required Documents">
-            <Select
-              mode="multiple"
-              style={{ width: "100%" }}
-              placeholder="Select required documents"
-              options={ALL_DOCUMENTS.map((doc) => ({ label: doc, value: doc }))}
-            />
-          </Form.Item>
-
-          <Form.Item name="courses" label="Courses">
-            <Select
-              mode="multiple"
-              style={{ width: "100%" }}
-              placeholder="Select courses"
-              options={ALL_COURSES.map((course) => ({
-                label: course,
-                value: course,
-              }))}
-            />
-          </Form.Item>
-
-          <Form.Item name="applicationPeriod" label="Application Period">
-            <Input placeholder="e.g., March 1 - April 1" />
-          </Form.Item>
-
-          <Form.Item>
-            <Button type="primary" htmlType="submit">
-              Add University
+    <Layout className="min-h-screen bg-gray-100 dark:bg-gray-900">
+      <Content className="p-4 sm:p-6 lg:p-8">
+        {selectedStudentId ? (
+          // --- Show Detail View ---
+          <>
+            <Button
+              onClick={handleBackToList}
+              className="mb-4 dark:bg-gray-700 dark:text-white dark:border-gray-600"
+              icon={<i className="fas fa-arrow-left mr-2"></i>}
+            >
+              Back to Student List
             </Button>
-          </Form.Item>
-        </Form>
+            <ConsultantStudentManagementPage
+              studentId={selectedStudentId}
+              key={selectedStudentId} // Ensures component remounts/refetches if ID changes
+            />
+          </>
+        ) : (
+          // --- Show List View ---
+          <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-4 sm:p-6">
+            <div className="flex justify-between items-center mb-4">
+              <Title level={3} className="mb-0 dark:text-white">
+                Consulting Students
+              </Title>
+              <Button
+                type="primary"
+                onClick={showAddStudentModal}
+                icon={<i className="fas fa-plus mr-2"></i>}
+              >
+                Add New Student
+              </Button>
+            </div>
+            <Search
+              placeholder="Search by name or email..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              allowClear
+              className="mb-4 dark:[&_input]:bg-gray-700 dark:[&_input]:text-white"
+            />
+            <List
+              itemLayout="horizontal"
+              dataSource={filteredStudents}
+              renderItem={(student) => (
+                <List.Item
+                  actions={[
+                    <Button
+                      type="link"
+                      onClick={() => handleSelectStudent(student.id)}
+                      className="dark:text-blue-400"
+                    >
+                      <i className="fas fa-eye mr-1"></i> View Details
+                    </Button>,
+                  ]}
+                  className="hover:bg-gray-50 dark:hover:bg-gray-700 dark:border-gray-700 transition-colors duration-150"
+                >
+                  <List.Item.Meta
+                    // avatar={<Avatar src="url_to_avatar_if_available" />}
+                    title={
+                      <span className="font-semibold dark:text-white">
+                        {student.name}
+                      </span>
+                    }
+                    description={
+                      <div className="text-sm">
+                        <Text
+                          type="secondary"
+                          className="dark:text-gray-400 block"
+                        >
+                          {student.email}
+                        </Text>
+                        <Text
+                          type="secondary"
+                          className="dark:text-gray-400 block"
+                        >
+                          Package:{" "}
+                          <span className="font-medium text-blue-600 dark:text-blue-400">
+                            {servicePackages[student.servicePackage]?.name ||
+                              "N/A"}
+                          </span>
+                        </Text>
+                        {/* Add more info like status if available in list data */}
+                        {/* <Text type="secondary" className="dark:text-gray-400 block">Status: {student.status}</Text> */}
+                      </div>
+                    }
+                  />
+                </List.Item>
+              )}
+              locale={{
+                emptyText: (
+                  <span className="dark:text-gray-400">No students found.</span>
+                ),
+              }}
+            />
+          </div>
+        )}
+      </Content>
+      {/* Modal Student Add */}
+      <Modal
+        title="Add New Student"
+        open={isAddModalVisible}
+        onCancel={handleCancelAddStudent}
+        footer={null} // Footer is handled by the form's button
+        destroyOnClose={true} // Resets form state when modal is closed
+        width={800} // Adjust width as needed
+      >
+        <AddStudentForm onStudentAdded={handleStudentAdded} />
       </Modal>
-    </div>
+    </Layout>
   );
 };
 
-export default UniversityManagement;
+export default ConsultantDashboard;
