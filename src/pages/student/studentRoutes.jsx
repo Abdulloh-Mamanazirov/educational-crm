@@ -2,6 +2,7 @@ import StudentDashboard from "./home";
 import StudentSchedule from "./schedule";
 import StudentAssignments from "./homeworkAndAssignments";
 import StudentInquiry from "./inquiry";
+import StudentAnnouncements from "./announcements";
 import StudentProfile from "./profile";
 
 export const studentRoutes = [
@@ -41,20 +42,29 @@ export const studentRoutes = [
       <img
         src="https://schools-cdn.duolingo.com/favicon.ico"
         className="lg:w-5"
-        />
-      ),
-      showInMenu: true,
-      roles: ["student"],
-    },
-    {
-      id: 304,
-      path: "/student/inquiry",
-      element: <StudentInquiry />,
-      label: "Inquiry & Support",
-      icon: <span className="fa-solid fa-circle-question" />,
-      showInMenu: true,
-      roles: ["student"],
-    },
+      />
+    ),
+    showInMenu: true,
+    roles: ["student"],
+  },
+  {
+    id: 304,
+    path: "/student/inquiry",
+    element: <StudentInquiry />,
+    label: "Inquiry & Support",
+    icon: <span className="fa-solid fa-circle-question" />,
+    showInMenu: true,
+    roles: ["student"],
+  },
+  {
+    id: 305,
+    path: "/student/announcements",
+    element: <StudentAnnouncements />,
+    label: "Announcements",
+    icon: <span className="fa-solid fa-bullhorn" />,
+    showInMenu: true,
+    roles: ["student"],
+  },
   {
     id: 3020,
     path: "/student/profile",
