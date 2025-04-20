@@ -57,3 +57,45 @@
   background-color: #4b5563;
   border-color: #4b5563;
 }
+
+/* Google Translate Button styles */
+body > .skiptranslate {
+  display: none !important;
+}
+#google_translate_element * {
+  border: 0.1px transparent solid !important;
+}
+#google_translate_element select {
+  transform: translateY(33px);
+}
+#google_translate_element div.goog-te-gadget:not(:first-of-type) {
+  display: none !important;
+}
+#google_translate_element div[dir="ltr"]:nth-of-type(n + 2) {
+  display: none !important;
+}
+
+a[href="https://translate.google.com"]
+{
+  display: none !important;
+}
+.goog-te-banner-frame.skiptranslate {
+  display: none !important;
+}
+.skiptranslate > span {
+  display: none;
+}
+.skiptranslate {
+  color: transparent !important;
+}
+.skiptranslate > div select {
+  color: black !important;
+}
+body {
+  top: 0px !important;
+}
+@media print {
+  #google_translate_element {
+    display: none;
+  }
+}
