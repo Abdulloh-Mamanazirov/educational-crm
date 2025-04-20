@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Layout, Menu, Switch, Avatar, Dropdown } from "antd";
 import { useNavigate, useLocation, Outlet } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -62,6 +62,13 @@ const MainLayout = () => {
 
   // Current date
   const currentDate = new Date().toLocaleDateString("uz-Uz");
+
+  // Google Translate Element
+  useEffect(() => {
+    if (typeof window.googleTranslateElementInit === "function") {
+      setTimeout(window.googleTranslateElementInit, 100);
+    }
+  }, []);
 
   return (
     <Layout className={`min-h-screen ${theme === "dark" ? "dark" : ""}`}>
@@ -151,25 +158,29 @@ const MainLayout = () => {
               {currentDate}
             </div>
           </div>
-          <div className="flex items-center pr-3">
-            {/* Dark Mode Switch */}
-            <Switch
-              checkedChildren="🌙"
-              unCheckedChildren="☀️"
-              style={{ outline: "1px solid gray" }}
-              onChange={() =>
-                dispatch(changeTheme(theme === "light" ? "dark" : "light"))
-              }
-              className="mr-4"
-            />
-            {/* Profile Dropdown */}
-            <Dropdown overlay={profileMenu} trigger={["click"]}>
-              <Avatar
-                size="large"
-                icon={<span className="fa-regular fa-user text-lg" />}
-                className="cursor-pointer bg-slate-500"
+          <div className="flex items-center gap-2">
+            <div className="h-full notranslate" lang="en">
+              <div id="google_translate_element"></div>
+            </div>
+            <div className="flex items-center pr-3 gap-3">
+              {/* Dark Mode Switch */}
+              <Switch
+                checkedChildren="🌙"
+                unCheckedChildren="☀️"
+                style={{ outline: "1px solid gray" }}
+                onChange={() =>
+                  dispatch(changeTheme(theme === "light" ? "dark" : "light"))
+                }
               />
-            </Dropdown>
+              {/* Profile Dropdown */}
+              <Dropdown overlay={profileMenu} trigger={["click"]}>
+                <Avatar
+                  size="large"
+                  icon={<span className="fa-regular fa-user text-lg" />}
+                  className="cursor-pointer bg-slate-500"
+                />
+              </Dropdown>
+            </div>
           </div>
         </Header>
 
