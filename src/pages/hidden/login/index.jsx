@@ -87,26 +87,20 @@ const Login = () => {
   return (
     <div className="min-h-screen flex">
       {contextHolder}
-      {/* Dark Mode switch */}
-      <FloatButton
-        onClick={() =>
-          dispatch(changeTheme(theme === "light" ? "dark" : "light"))
-        }
-        icon={
-          theme === "dark" ? (
-            <span className="fa-regular fa-sun" />
-          ) : (
-            <span className="fa-regular fa-moon" />
-          )
-        }
-      />
       {/* Left Side - Gradient */}
       <div className="hidden lg:flex w-1/2 bg-gradient-to-br from-blue-500 to-teal-400 dark:from-blue-900 dark:to-teal-900 items-center justify-center">
-        <p className="text-white text-xl font-bold">Educational CRM</p>
+        <div>
+          <img
+            src="./educon.jpg"
+            alt="logo"
+            className="aspect-square size-72 rounded-2xl mb-2"
+          />
+          <p className="text-white text-center text-xl font-bold">EduCON CRM</p>
+        </div>
       </div>
       {/* Right Side - Form */}
       <div className="flex flex-col w-full lg:w-1/2 justify-center items-center bg-white dark:bg-gray-800">
-        <img src="./favicon.svg" alt="Logo" className="w-32 mb-8" />
+        <img src="./educon.png" alt="Logo" className="size-48 mb-8" />
         {/* Login Form */}
         <Form
           name="loginForm"
@@ -143,6 +137,19 @@ const Login = () => {
           </Form.Item>
         </Form>
       </div>
+      {/* Dark Mode switch */}
+      <FloatButton
+        onClick={() =>
+          dispatch(changeTheme(theme === "light" ? "dark" : "light"))
+        }
+        icon={
+          theme === "dark" ? (
+            <span className="fa-regular fa-sun" />
+          ) : (
+            <span className="fa-regular fa-moon" />
+          )
+        }
+      />
     </div>
   );
 };
