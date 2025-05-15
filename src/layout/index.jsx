@@ -50,6 +50,20 @@ const MainLayout = () => {
           icon: <span className="fa-solid fa-user" />,
         },
         {
+          key: "mode",
+          icon: <span className="fa-solid fa-palette" />,
+          label: (
+            <Switch
+              checkedChildren="🌙"
+              unCheckedChildren="☀️"
+              style={{ outline: "none" }}
+              onChange={() =>
+                dispatch(changeTheme(theme === "light" ? "dark" : "light"))
+              }
+            />
+          ),
+        },
+        {
           danger: true,
           key: "logout",
           onClick: handleLogout,
@@ -152,7 +166,7 @@ const MainLayout = () => {
               )}
             </button>
           </div>
-          <div>
+          <div className="hidden lg:block">
             {/* Current Date */}
             <div className="ml-4 text-lg text-gray-700 dark:text-gray-300">
               {currentDate}
@@ -171,6 +185,7 @@ const MainLayout = () => {
                 onChange={() =>
                   dispatch(changeTheme(theme === "light" ? "dark" : "light"))
                 }
+                className="hidden lg:block"
               />
               {/* Profile Dropdown */}
               <Dropdown overlay={profileMenu} trigger={["click"]}>
